@@ -58,15 +58,37 @@ def get_all_images(access_token):
     headers = {
             'Authorization': 'Bearer ' + access_token
         }
-    
+    images = []
     try:
+        logging.info("Fetching all the images")
         response = requests.get(
             url,
             headers=headers
         )
         if response.ok:
-            return response.json().get('pictures')
-
+            total_pages = response.json().get('pageCount')
+            images = response.json().get('pictures')
+            for i in range(2,total_pages):
+                paginated_url = f'http://interview.agileengine.com/images?page={i}'
+                response = requests.get(
+                    paginated_url,
+                    headers=headers
+                )
+                images += response.json().get('pictures')
+                print(f"fetched {i} of {total_pages}")
+        
+        detailed_images = []
+        for image in images:
+            detail_url = f"http://interview.agileengine.com/images/{image.get('id')}"
+            
+            print(f"Retrieving detail of {image['id']}")
+            response = requests.get(
+                detail_url,
+                headers=headers
+            )
+            if response.ok:
+                detailed_images.append(response.json())
+        return detailed_images
     except requests.exceptions.HTTPError:
         logging.exception('HTTP error')
     except requests.exceptions.ConnectionError:
