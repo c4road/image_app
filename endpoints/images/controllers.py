@@ -34,7 +34,7 @@ class ImageSearchController(Resource):
                 (search_term in camera) or \
                 (search_term in tags):
                 search_results.append(image)
-                break
+
         response.update({"results": search_results})
         return response
 
