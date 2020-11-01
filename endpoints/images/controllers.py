@@ -19,20 +19,23 @@ class ImageSearchController(Resource):
         images = get_images_from_cache()
         search_term = str(search_term).lower().strip()
         response = {
-            "image": "No results found"
+            "results": "No results found"
         }
         search_results = []
         for image in images:
-            print(image)
             id_ = image.get('id', '')
             author = image.get('author', '').lower()
             camera = image.get('camera', '').lower()
             tags = image.get("tags", '').lower()
 
-            if (search_term == id_) or \
-                (search_term == author) or \
-                (search_term in camera) or \
-                (search_term in tags):
+            if (search_term == id_):
+                response.update({"results": image})
+                return response
+
+            elif (search_term == author) or \
+                 (search_term in camera) or \
+                 (search_term in tags):
+
                 search_results.append(image)
 
         response.update({"results": search_results})

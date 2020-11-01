@@ -65,10 +65,11 @@ def get_all_images(access_token):
             url,
             headers=headers
         )
-        if response.ok:
+        if response.ok:        
             total_pages = response.json().get('pageCount')
             images = response.json().get('pictures')
-            for i in range(2,total_pages):
+            print(f"fetched 1 of {total_pages}")
+            for i in range(2,total_pages + 1):
                 paginated_url = f'http://interview.agileengine.com/images?page={i}'
                 response = requests.get(
                     paginated_url,
