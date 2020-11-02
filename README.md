@@ -10,6 +10,7 @@ FLASK_DEBUG=1 flask run --no-reload
 
 With a little bit more time we could:
 
+- use generator to retrieve from cache
 - docker-compose
 - Implement dataclasses instead of dictionaries.
 - Marshalling.
