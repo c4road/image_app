@@ -10,9 +10,9 @@ FLASK_DEBUG=1 flask run --no-reload
 
 With a little bit more time we could:
 
-docker-compose
-Implement dataclasses instead of dictionaries.
-Marshalling.
-OpenApi.
-pytests.
-wsgi.
+- docker-compose
+- Implement dataclasses instead of dictionaries.
+- Marshalling.
+- OpenApi.
+- pytests.
+- wsgi.
