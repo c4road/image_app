@@ -8,7 +8,7 @@ from flask_restful import abort
 
 def token_required(f):
     @wraps(f)
-    def decorated_function(*args, **kwargs):
+    def inner(*args, **kwargs):
         """
         """
 
@@ -47,7 +47,7 @@ def token_required(f):
             return f(*args, access_token=access_token, **kwargs)
         else:
             abort(status_code)
-    return decorated_function
+    return inner
 
 
 @token_required
@@ -68,7 +68,7 @@ def get_all_images(access_token):
         if response.ok:        
             total_pages = response.json().get('pageCount')
             images = response.json().get('pictures')
-            print(f"fetched 1 of {total_pages}")
+            logging.info(f"fetched 1 of {total_pages}")
             for i in range(2,total_pages + 1):
                 paginated_url = f'http://interview.agileengine.com/images?page={i}'
                 response = requests.get(
@@ -76,13 +76,13 @@ def get_all_images(access_token):
                     headers=headers
                 )
                 images += response.json().get('pictures')
-                print(f"fetched {i} of {total_pages}")
+                logging.info(f"fetched {i} of {total_pages}")
         
         detailed_images = []
         for image in images:
             detail_url = f"http://interview.agileengine.com/images/{image.get('id')}"
             
-            print(f"Retrieving detail of {image['id']}")
+            logging.info(f"Retrieving detail of {image['id']}")
             response = requests.get(
                 detail_url,
                 headers=headers

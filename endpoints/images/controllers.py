@@ -1,6 +1,8 @@
 from flask_restful import Resource
+
+from services.agilengine import get_all_images
 from cache import cache
-from utils import get_all_images
+
 
 
 def get_images_from_cache():
@@ -10,6 +12,24 @@ def get_images_from_cache():
     
     return images
 
+def filter_images(images, search_term):
+    search_results = []
+    for image in images:
+        id_ = image.get('id', '')
+        author = image.get('author', '').lower()
+        camera = image.get('camera', '').lower()
+        tags = image.get("tags", '').lower()
+
+        if (search_term == id_):
+            return {"results": [image] } 
+
+        elif (search_term == author) or \
+             (search_term in camera) or \
+             (search_term in tags):
+
+            results = search_results.append(image)
+
+    return {"results": search_results} 
 
 
 class ImageSearchController(Resource):
@@ -18,28 +38,9 @@ class ImageSearchController(Resource):
         """Create an account within the XCurrent platform"""
         images = get_images_from_cache()
         search_term = str(search_term).lower().strip()
-        response = {
-            "results": "No results found"
-        }
-        search_results = []
-        for image in images:
-            id_ = image.get('id', '')
-            author = image.get('author', '').lower()
-            camera = image.get('camera', '').lower()
-            tags = image.get("tags", '').lower()
+        response = filter_images(images, search_term)
 
-            if (search_term == id_):
-                response.update({"results": image})
-                return response
-
-            elif (search_term == author) or \
-                 (search_term in camera) or \
-                 (search_term in tags):
-
-                search_results.append(image)
-
-        response.update({"results": search_results})
-        return response
+        return response, 200
 
 
 class ImageController(Resource):
@@ -50,4 +51,4 @@ class ImageController(Resource):
         response = {
             'images': images
         }
-        return response
+        return response, 200 
