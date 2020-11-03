@@ -19,9 +19,7 @@ def create_app():
 
     config = {
         "production": "ProductionConfig",
-        "development": "DevelopmentConfig",
-        # "staging": "StagingConfig",
-        # "testing": "TestingConfig"
+        "development": "DevelopmentConfig"
     }
 
     app = Flask(__name__)
@@ -52,4 +50,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True, host='0.0.0.0', use_reloader=True)
+    app.run(debug=True, host='0.0.0.0', use_reloader=False)

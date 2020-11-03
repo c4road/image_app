@@ -52,7 +52,8 @@ def token_required(f):
 
 @token_required
 def get_all_images(access_token):
-    """This function is used to send http requests to Xcurrent
+    """
+        Fetch all the images from agile engine
     """
     url = 'http://interview.agileengine.com/images'
     headers = {

@@ -8,6 +8,7 @@ from cache import cache
 def get_images_from_cache():
     images = cache.get('images')
     if not images:
+        # Should be threaded
         cache.set('images', get_all_images())
     
     return images
